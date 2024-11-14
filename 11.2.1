@@ -1,0 +1,13 @@
+#include<vector>
+using namespace std;
+#include<algorithm>
+
+int main() {
+    vector<string> vec;
+    map<string,vector<string>> family{{"name",vec}}; // пустая карта
+    vector<string> vec1;
+    auto it = family.find("name");
+    if (it != family.end()) {
+        it->second=vec1; // Добавление имени ребенка в вектор
+    }
+}
