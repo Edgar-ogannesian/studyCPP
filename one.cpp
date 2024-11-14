@@ -29,7 +29,28 @@ void fillQest(){
      cout<<vec[3];
 }
 
-
+void reversIter(){
+    std::vector<int> vec {3,2,3,2,1,5,6,7};
+	auto iterReverse=vec.crbegin();
+	for(int i=0;i<vec.size();i++)
+    {
+	    cout<<*iterReverse;
+	    iterReverse++;
+	}
+    auto iter=vec.cbegin();
+	for(int i=0;i<vec.size();i++)
+    {
+	    cout<<*iter;
+	    iter++;
+	}
+	auto iterForFind=find(vec.crbegin(),vec.crend(),0);
+	cout<<*iterForFind;
+}
+void copyReverse(){
+    vector<int> vec{1,2,2,2,4,2,1,5,6,7};
+    vector<int> vec1(10);
+    copy(vec.crbegin()+3,vec.crend()-3,vec1.begin());
+}
 int main() {
     cout << "Hello, World!" << std::endl;
     return 0;
