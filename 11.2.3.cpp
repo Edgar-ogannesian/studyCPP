@@ -22,4 +22,11 @@ int main() {
     p1.first=1;
     p1.second=1;
     pair<int,int>p2(3,3);
+    //----------------------------------------------------------
+    vector<pair<string,string>> vec;
+    map<string,vector<string>> family{{"name",vec}}; 
+    auto it = family.find("name");
+    if (it != family.end()) {
+        it->second=vec; 
+    }
 }
