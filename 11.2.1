@@ -3,11 +3,11 @@ using namespace std;
 #include<algorithm>
 
 int main() {
-    vector<string> vec;
+    vector<pair<string,string>> vec;
     map<string,vector<string>> family{{"name",vec}}; 
     auto it = family.find("name");
     if (it != family.end()) {
-        it->second=vec1; 
+        it->second=vec; 
     }
     //---------------------------------------------------------------------------------------------------------------------
     map<string, size_t> word_count; // пустая карта
