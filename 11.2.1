@@ -4,10 +4,23 @@ using namespace std;
 
 int main() {
     vector<string> vec;
-    map<string,vector<string>> family{{"name",vec}}; // пустая карта
-    vector<string> vec1;
+    map<string,vector<string>> family{{"name",vec}}; 
     auto it = family.find("name");
     if (it != family.end()) {
-        it->second=vec1; // Добавление имени ребенка в вектор
+        it->second=vec1; 
+    }
+    //---------------------------------------------------------------------------------------------------------------------
+    map<string, size_t> word_count; // пустая карта
+
+    vector<string> exclude = {"The", "But", "And", "Or",
+    "An", "A",
+    "the", "but", "and", "or",
+    "an", "a"};
+    string word;
+    while (cin >> word){
+        auto f=find(exclude.cbegin(),exclude.cend(),word)==exclude.cend();
+        if (f){
+            ++word_count[word];
+        }
     }
 }
