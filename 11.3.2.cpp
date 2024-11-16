@@ -15,12 +15,18 @@ int main() {
 "an", "a"};
     string word;
     while (cin >> word){
-// подсчитать только не исключенные слова
         if (exclude.find(word) == exclude.end()){
             int val=++word_count[word];
             word_count.erase(word);
             word_count.insert({word,val});
         }
+    }
+    //-----------------------------------------
+    vector<string> vec;
+    multimap<string,vector<string>> family{{"name",vec}}; 
+    auto it = family.find("name");
+    if (it != family.end()) {
+        it->second=vec; 
     }
     return 0;
 
