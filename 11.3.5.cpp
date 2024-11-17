@@ -15,8 +15,8 @@ int main() {
             authors.erase(it++);
         }
     }
-    multimap<string,string> authors{{"aname","value"},{"name","value"},{"name","antivalue"},{"m","e"}};
-    for(auto begin=authors.begin();begin!=authors.end();begin++){
+    multimap<string,string> authors1{{"aname","value"},{"name","value"},{"name","antivalue"},{"m","e"}};
+    for(auto begin=authors1.begin();begin!=authors1.end();begin++){
         std::cout << begin->first<<begin->second << std::endl;
     }
     

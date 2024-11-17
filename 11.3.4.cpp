@@ -12,7 +12,7 @@ int main() {
     family["iupojo"] = 1;
 
 
-    int children = familyChildren["iupojo"];
+    int children = family["iupojo"];
     return 0;
 
 }

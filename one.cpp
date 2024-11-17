@@ -2,6 +2,7 @@
 #include<algorithm>
 #include <vector>
 #include<list>
+#include<numeric>
 using namespace std;
 void count() {
     vector<int> vec{4,3,2,4,5,2,1,3,5};

@@ -1,5 +1,5 @@
 #include<vector>
-#include <сctype>
+#include<cctype>
 #include<map>
 #include<utility>
 #include <bits/stdc++.h>
@@ -16,10 +16,11 @@ int main() {
         if (exclude.find(word) == exclude.end())
             ++word_count[word];
     //------------------------------------------------------------------------------------------------------
-    while (cin >> word)
-
-        if (exclude.find(tolower(word)) == exclude.end())
-            ++word_count[tolower(word)];
+    string word1;
+    while (cin >> word1)
+        transform(word1.cbegin(),word1.cend(),word1.begin(),[](char symbols) {return tolower(symbols);});
+        if (exclude.find(word1) == exclude.end())
+            ++word_count[word1];
     return 0;
 
 }

@@ -1,6 +1,9 @@
 #include<vector>
 using namespace std;
 #include<algorithm>
+#include<string>
+#include<map>
+#include<iostream>
 
 int main() {
     vector<string> vec;

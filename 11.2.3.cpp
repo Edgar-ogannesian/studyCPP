@@ -2,6 +2,7 @@
 #include<map>
 #include<utility>
 #include <bits/stdc++.h>
+#include<utility>
 using namespace std;
 #include<algorithm>
 
@@ -23,10 +24,10 @@ int main() {
     p1.second=1;
     pair<int,int>p2(3,3);
     //----------------------------------------------------------
-    vector<pair<string,string>> vec;
-    map<string,vector<string>> family{{"name",vec}}; 
+    vector<pair<string,string>> vec1;
+    map<string,vector<pair<string,string>>> family{{"name",vec1}};
     auto it = family.find("name");
     if (it != family.end()) {
-        it->second=vec; 
+        it->second=vec1;
     }
 }
