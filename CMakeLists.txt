@@ -4,6 +4,10 @@ project(untitled)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(
+        homework homework.cpp
+)
+
+add_executable(
         11.1 11.1.cpp
 )
 add_executable(
