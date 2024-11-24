@@ -2,14 +2,15 @@
 #include<map>
 #include<string>
 #include<utility>
+using namespace std;
 #include<algorithm>
 
 int main() {
 
-  std::map<std::string,std::string> family{{"name","fdfa"}};
+  map<string,string> family{{"name","fdfa"}};
   auto g=family["name"]=9;
    //---------------------------------------------------------
-  std::map<std::string, std::string>::iterator map_it = family.begin();
+  map<string, string>::iterator map_it = family.begin();
     
   return 0;
 
