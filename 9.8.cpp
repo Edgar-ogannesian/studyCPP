@@ -23,7 +23,7 @@ void dijkstra(int src,const std::vector<std::vector<std::pair<int,int>>>& graph)
         }
     }
     for (int i=0; i<n;++i) {
-        std::cout<<"Distance from node "<<src<<" to"<<i<<"is "<<dist[i]<<std::endl;
+        std::cout<<"Distance from node "<<src<<" to "<<i<<"is "<<dist[i]<<std::endl;
     }
 }
 
