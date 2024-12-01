@@ -14,6 +14,13 @@
 //7	6,1	8,1
 //8	7,1	1,2
 
+struct Heap
+{
+    void push(int val);
+    int top() const;
+    void pop();
+};
+
 int findMedianHeap(std::vector<int> numVec)
 {
     int result;
