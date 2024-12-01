@@ -4,7 +4,15 @@ project(untitled)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(
-        homework homework.cpp
+        9.8 9.8.cpp
+)
+
+add_executable(
+        12.4 12.4.cpp
+)
+
+add_executable(
+        merge_sort merge_sort.cpp
 )
 
 add_executable(
@@ -16,6 +24,11 @@ add_executable(
 add_executable(
         11.2.3 11.2.3.cpp
 )
+
+add_executable(
+        11.3 11.3.cpp
+)
+
 add_executable(
         11.3.1 11.3.1.cpp
 )

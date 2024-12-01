@@ -1,9 +1,8 @@
-#include<vector>
 #include<map>
 #include<utility>
-#include <bits/stdc++.h>
+#include <string>
+#include <iostream>
 
-#include<algorithm>
 
 int main() {
 
@@ -16,8 +15,8 @@ int main() {
         }
     }
     std::multimap<std::string,std::string> authors1{{"aname","value"},{"name","value"},{"name","antivalue"},{"m","e"}};
-    for(auto begin=authors1.begin();begin!=authors1.end();begin++){
-        std::cout << begin->first<<begin->second << std::endl;
+    for(auto begin:authors1){
+        std::cout << begin.first<<begin.second << std::endl;
     }
     
     return 0;

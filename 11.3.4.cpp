@@ -1,8 +1,8 @@
-#include<vector>
+
 #include<map>
-#include<utility>
-#include <bits/stdc++.h>
-#include<algorithm>
+
+#include<string>
+
 
 int main() {
     std::map<std::string, int> family;
