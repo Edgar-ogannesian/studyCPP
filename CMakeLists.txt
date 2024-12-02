@@ -8,7 +8,7 @@ add_executable(
 )
 
 add_executable(
-        12.4 12.4.cpp
+        twoSum twoSum.cpp
 )
 
 add_executable(

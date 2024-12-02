@@ -2,7 +2,8 @@
 #include <iostream>
 #include <unordered_set>
 #include <array>
-
+#include <map>
+#include <cassert>
 // Дан массив чисел и число - сумма двух элементов. Найти любые два элемента,
 // сумма которых равна введенному числу
 
@@ -15,10 +16,11 @@
 //7	6,1	8,1
 //8	7,1	1,2
 
-std::vector<int> twoSum(std::vector<int> arr,int t)
+std::map<int,int> twoSum(std::vector<int> arr,int t)
 {
     std::unordered_set<int> arrHash;
-    std::vector<int> result;
+    std::map<int,int> result;
+
     for(int i=0;i<arr.size();i++)
     {
         arrHash.emplace(arr[i]);
@@ -27,24 +29,36 @@ std::vector<int> twoSum(std::vector<int> arr,int t)
     for(int i=0;i<arr.size();i++)
     {
         int y=t-arr[i];
-
         if(arrHash.count(y))
         {
-            result.emplace_back(arr[i]);
+            result.emplace(std::pair<int,int>{arr[i],y});
         }
     }
 
     return result;
 }
 
-int main() {
-    std::vector<int> arr{4,1,2,3,7,8,9,10,11,14};
+bool testTwoSum(std::vector<int> arr,int t) {
+    std::map<int,int> expected;
+    std::map<int,int> result=twoSum(arr,t);
 
-    std::vector<int> result=twoSum(arr,5);
-    for(int i:result)
+    for(int i:arr)
     {
-        std::cout<<i<<std::endl;
+        for(int j:arr)
+        {
+            if((i+j)==t) {
+                expected.emplace(std::pair<int,int>{i,j});
+            }
+        }
     }
+
+    return expected==result;
+}
+
+int main() {
+    assert(testTwoSum(std::vector<int>{},1));
+    assert(testTwoSum(std::vector<int>{1},1));
+    assert(testTwoSum(std::vector<int>{3,2,5,4,2,5,1,1,5,6},5));
 
     return 0;
 }
