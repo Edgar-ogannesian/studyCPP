@@ -28,23 +28,15 @@ int mergeAndCount(std::vector<int>& arr, int left, int right) {
         k++;
     }
 
-    while (i<n1) {
-        arr[k]=L[i];
-        i++;
-        k++;
-    }
-
-    while (j<n2) {
-        arr[k]=R[j];
-        j++;
-        k++;
-    }
+    std::copy(L.begin()+i,L.end(),arr.begin()+k);
+    std::copy(R.begin()+j,R.end(),arr.begin()+k+n1-i);
 
     return inv_count;
 }
 
 int mergeSortAndCount(std::vector<int>& arr, int left, int right) {
     int inv_count=0;
+
     if (left<right) {
         int mid=left+(right-left)/2;
         inv_count+=mergeSortAndCount(arr,left,mid);

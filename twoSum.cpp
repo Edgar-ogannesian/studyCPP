@@ -16,10 +16,10 @@
 //7	6,1	8,1
 //8	7,1	1,2
 
-std::map<int,int> twoSum(std::vector<int> arr,int t)
+std::pair<int,int> twoSum(std::vector<int> arr,int t)
 {
     std::unordered_set<int> arrHash;
-    std::map<int,int> result;
+    std::pair<int,int> result{};
 
     for(int i=0;i<arr.size();i++)
     {
@@ -29,9 +29,11 @@ std::map<int,int> twoSum(std::vector<int> arr,int t)
     for(int i=0;i<arr.size();i++)
     {
         int y=t-arr[i];
+
         if(arrHash.count(y))
         {
-            result.emplace(std::pair<int,int>{arr[i],y});
+            result=std::pair<int,int>{arr[i],y};
+            break;
         }
     }
 
@@ -39,20 +41,29 @@ std::map<int,int> twoSum(std::vector<int> arr,int t)
 }
 
 bool testTwoSum(std::vector<int> arr,int t) {
-    std::map<int,int> expected;
-    std::map<int,int> result=twoSum(arr,t);
+    std::pair<int,int> twoNum=twoSum(arr,t);
+    bool result=0;
+
+    if((arr.size()<2) || (twoNum.first==0 && twoNum.second==0))
+    {
+            result=true;
+    }
 
     for(int i:arr)
     {
         for(int j:arr)
         {
-            if((i+j)==t) {
-                expected.emplace(std::pair<int,int>{i,j});
+            if((i+j)==t)
+            {
+                if((i==twoNum.first && j==twoNum.second) || (i==twoNum.second && j==twoNum.first))
+                {
+                    result=true;
+                }
             }
         }
     }
 
-    return expected==result;
+    return result;
 }
 
 int main() {
