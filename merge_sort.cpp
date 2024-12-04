@@ -4,7 +4,7 @@
 #include <cassert>
 
 int mergeAndCount(std::vector<int>& arr, int left, int right) {
-    int mid=left+(right-left)/2;
+    int mid=left+(--right-left)/2;
     int n1=mid-left+1;
     int n2=right-mid;
 
@@ -39,15 +39,15 @@ int mergeSortAndCount(std::vector<int>& arr, int left, int right) {
 
     if (left<right) {
         int mid=left+(right-left)/2;
-        inv_count+=mergeSortAndCount(arr,left,mid);
-        inv_count+=mergeSortAndCount(arr, mid+1,right);
-        inv_count+=mergeAndCount(arr, left, right);
+        inv_count+=mergeSortAndCount(arr,left,mid+1);
+        inv_count+=mergeSortAndCount(arr, mid+1,right+1);
+        inv_count+=mergeAndCount(arr, left, right+1);
     }
     return inv_count;
 }
 
 int mergeSortAndCount(std::vector<int>& arr) {
-    return mergeSortAndCount(arr, 0, arr.size()-1);
+    return mergeSortAndCount(arr, 0, arr.size());
 }
 
 bool testMergeSort(std::vector<int> arr)
