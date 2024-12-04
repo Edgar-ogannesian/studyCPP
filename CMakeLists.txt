@@ -18,6 +18,11 @@ add_executable(
 add_executable(
         11.1 11.1.cpp
 )
+
+add_executable(
+        binFind binFind.cpp
+)
+
 add_executable(
         11.2.1 11.2.1.cpp
 )
