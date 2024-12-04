@@ -37,7 +37,7 @@ int mergeAndCount(std::vector<int>& arr, int left, int right) {
 int mergeSortAndCount(std::vector<int>& arr, int left, int right) {
     int inv_count=0;
 
-    if (left<right) {
+    if (left<--right) {
         int mid=left+(right-left)/2;
         inv_count+=mergeSortAndCount(arr,left,mid+1);
         inv_count+=mergeSortAndCount(arr, mid+1,right+1);
