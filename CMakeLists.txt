@@ -20,7 +20,7 @@ add_executable(
 )
 
 add_executable(
-        binFind binFind.cpp
+        binFind binSearch.cpp
 )
 
 add_executable(
