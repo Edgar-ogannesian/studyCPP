@@ -3,6 +3,9 @@ project(untitled)
 
 set(CMAKE_CXX_STANDARD 17)
 
+add_compile_options(-fsanitize=address)
+add_link_options(-fsanitize=address)
+
 add_executable(
         9.8 9.8.cpp
 )
