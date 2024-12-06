@@ -1,0 +1,15 @@
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/9.8.dir
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/twoSum.dir
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/merge_sort.dir
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/11.1.dir
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/binSearch.dir
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/11.2.1.dir
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/11.2.3.dir
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/11.3.dir
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/11.3.1.dir
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/11.3.2.dir
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/11.3.4.dir
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/11.3.5.dir
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/one.dir
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/donsimon/CLionProjects/studyCPP/cmake-build-debug/CMakeFiles/rebuild_cache.dir
