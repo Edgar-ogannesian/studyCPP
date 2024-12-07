@@ -15,6 +15,10 @@ add_executable(
 )
 
 add_executable(
+        heap heap.cpp
+)
+
+add_executable(
         merge_sort merge_sort.cpp
 )
 
@@ -25,6 +29,7 @@ add_executable(
 add_executable(
         binSearch binSearch.cpp
 )
+
 
 add_executable(
         11.2.1 11.2.1.cpp
