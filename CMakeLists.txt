@@ -15,10 +15,6 @@ add_executable(
 )
 
 add_executable(
-        heap heap.cpp
-)
-
-add_executable(
         merge_sort merge_sort.cpp
 )
 
