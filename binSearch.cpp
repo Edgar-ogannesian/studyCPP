@@ -2,57 +2,39 @@
 #include <vector>
 #include <cassert>
 #include<cmath>
+#include <algorithm>
 
-template<typename T>
-typename std::vector<T>::iterator binarySearch(std::vector<T>& arr,T num){
-    int n=arr.size()/2 + arr.size()%2;
-    int flag=0;
-    typename std::vector<T>::iterator pointer=arr.begin() + arr.size()/2 - (arr.size()%2==0);
+template<typename T,typename Num>
+typename std::vector<T>::iterator binarySearch(T itBegin,T itEnd,Num value) {
+    auto pointerBegin = arr.begin();
+    auto pointerEnd = arr.end();
 
-    if(arr.empty())
-    {
-        return arr.end();
-    }
+    while (pointerEnd - pointerBegin) {
+        auto pointerMid = pointerBegin + (pointerEnd - pointerBegin) / 2;
 
-    do{
-        flag++;
-        n=n/2 + (n%2) - (n==3);
-
-        if(*pointer==num)
-        {
-            return pointer;
-        }else if(num>*pointer && pointer!=arr.end())
-        {
-            pointer+=n;
-        }else if(num<*pointer && pointer!=arr.begin())
-        {
-            pointer-=n;
+        if (*pointerMid == num) {
+            return pointerMid;
+        };
+        if (num < *pointerMid) {
+            pointerEnd = pointerMid;
+        } else if (num > *pointerMid) {
+            pointerBegin = pointerMid + 1;
         }
-    }while(flag<std::log2(arr.size()));
+    }
 
     return arr.end();
 }
 
 template<typename T>
-bool testBinarySerch(typename std::vector<T>arr,T num)
-{
-    typename std::vector<T>::iterator expexted=arr.begin();
-    typename std::vector<T>::iterator result=binarySearch(arr,num);
+bool testBinarySerch(typename std::vector<T> arr, T num) {
+    typename std::vector<T>::iterator result = binarySearch(arr, num);
 
-    while (expexted!=arr.end())
-    {
-        if(num==*expexted)
-        {
-            break;
-        }
-        expexted++;
-    }
+    auto expexted = std::find(arr.cbegin(), arr.cend(), num);
 
-    return expexted==result;
+    return expexted == result;
 }
 
-int main(){
-
+int main() {
     assert(testBinarySerch(std::vector<int>{},6));
     assert(testBinarySerch(std::vector<int>{1},1));
     assert(testBinarySerch(std::vector<int>{1},6));

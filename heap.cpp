@@ -1,140 +1,136 @@
-//
-// Created by donsimon on 12/19/24.
-//
 #include <vector>
 #include <cmath>
 #include <iostream>
 #include <algorithm>
+#include <random>
 
-struct IHeap
-{
+
+template<typename T>
+struct IHeap {
 public:
-    virtual void Pop(std::vector<int>::iterator parent)=0;
-    virtual void Pop(int num)=0;
-    virtual void Append(int num)=0;
-    virtual int GetRoot()=0;
+    virtual void PopRoot() =0;
+    virtual void Append(T num) =0;
+    virtual T GetRoot() =0;
+    virtual void Heapify() =0;
 };
 
-struct HeapMin : IHeap
-{
+template<typename T>
+struct HeapMin : IHeap<T> {
 private:
-    std::vector<int> heap;
-    std::vector<std::vector<int>::iterator> holes;
+    std::vector<T> heap;
 
-    std::vector<int>::iterator FindPerent(std::vector<int>::iterator it)
-    {
-        int position=std::distance(heap.begin(),it);
-
-        return (heap.begin() + position/2);
+    typename std::vector<T>::iterator FindPerent(typename std::vector<T>::iterator it) {
+        int position = std::distance(heap.begin(), it);
+        return (heap.begin() + position / 2);
     };
-    std::pair<std::vector<int>::iterator,std::vector<int>::iterator> FindChild(std::vector<int>::iterator parent) {
-        int position=std::distance(heap.begin(),parent)+1;
+    auto FindPairChild(typename std::vector<T>::iterator& parent) {
+        int position = std::distance(heap.begin(), parent) + 1;
 
-        std::vector<int>::iterator firstChild = (position*2 <= heap.size()) ? heap.begin() + position*2 - 1 : parent;
-        std::vector<int>::iterator secondChild = (position*2 < heap.size()) ? heap.begin() + position*2 : parent;
+        auto firstChild = (position * 2 <= heap.size()) ? heap.begin() + position * 2 - 1 : heap.end();
+        auto secondChild = (position * 2 < heap.size()) ? heap.begin() + position * 2 : heap.end();
+        std::pair<typename std::vector<T>::iterator,typename std::vector<T>::iterator> result={firstChild, secondChild};
 
-        return {firstChild,secondChild};
+        return result;
     };
-    std::vector<int>::iterator ReplaceParentChild(std::vector<int>::iterator parent,std::vector<int>::iterator child)
-    {
-        std::iter_swap(parent,child);
+
+    auto ReplaceParentChild(typename std::vector<T>::iterator& parent,typename std::vector<T>::iterator& child) {
+        std::iter_swap(parent, child);
         return parent;
     }
+    auto GetMinChaild(std::pair<typename std::vector<T>::iterator,typename std::vector<T>::iterator>& pairChaild) {
+        if(pairChaild.second != heap.end()) {
+            if(*pairChaild.first < *pairChaild.second) {return pairChaild.first;}
+            else{return pairChaild.second;}
+        }
+        return pairChaild.first;
+    }
+    void Heapify() {
+        auto parent=heap.begin();
+
+        auto pairChaild=FindPairChild(parent);
+        auto minChaild=GetMinChaild(pairChaild);
+
+        while (minChaild != heap.end() && (minChaild < parent)) {
+            parent=ReplaceParentChild(minChaild,parent);
+            pairChaild=FindPairChild(parent);
+            minChaild=GetMinChaild(pairChaild);
+        }
+    }
+
 
 public:
-    int GetRoot() final
-    {
-        return heap[0];
+    T GetRoot() final {
+        if(!heap.empty()){return heap[0];}
     };
+    bool IsEmpty() {
+        return heap.empty();
+    }
     void Show() const {
-        for(int i:heap) std::cout<<i<<"  ";
-    }
-    std::vector<int>::iterator GetIterator(int num)
-    {
-        std::vector<int>::iterator it = heap.begin();
-
-        while (it!=heap.end())
-        {
-            if(*it==num)
-            {
-                return it;
-            }else
-            {
-                it++;
-            }
+        for (T node : heap) {
+            std::cout<<node<<" ";
         }
-
-        return it;
+        std::cout<<std::endl;
     }
 
-    void Pop(std::vector<int>::iterator parent) final
-    {
-        std::pair<std::vector<int>::iterator,std::vector<int>::iterator> child=FindChild(parent);
-        std::vector<int>::iterator minChild = (*child.second<*child.first && child.second!=parent) ? child.second : child.first;
-        while (minChild!=parent)
-        {
-            parent=ReplaceParentChild(minChild,parent);
-            child=FindChild(parent);
-            minChild = (*child.second<*child.first && child.second!=parent) ? child.second : child.first;        }
+    void PopRoot() final {
+        heap.begin()=heap.end()-1;
+        Heapify();
+        heap.erase(heap.begin()+heap.size()-1);
 
-        holes.push_back(parent);
-        *parent=NULL;
     }
-    void Pop(int num) final
-    {
-        std::vector<int>::iterator parent=GetIterator(num);
+    void Append(T num) final {
+        heap.push_back(num);
 
-        if(parent==heap.end())
-        {
-            return;
-        };
+        auto elemIterator=heap.end()-1;
+        auto parent = FindPerent(elemIterator);
 
-        std::pair<std::vector<int>::iterator,std::vector<int>::iterator> child=FindChild(parent);
-        std::vector<int>::iterator minChild = (*child.second<*child.first && child.second!=parent) ? child.second : child.first;
 
-        while (minChild!=parent)
-        {
-            parent=ReplaceParentChild(minChild,parent);
-            child=FindChild(parent);
-            minChild = (*child.second<*child.first && child.second!=parent) ? child.second : child.first;        }
-
-        holes.push_back(parent);
-        *parent=NULL;
-    }
-    void Append(int num) final
-    {
-        std::vector<int>::iterator elemIterator;
-
-        if(holes.size()) {
-            **(holes.begin())=num;
-            elemIterator=*holes.begin();
-            holes.erase(holes.begin());
-        }else
-        {
-            heap.push_back(num);
-            elemIterator=heap.end()-1;
-        }
-
-        std::vector<int>::iterator parent=FindPerent(elemIterator);
-        std::pair<std::vector<int>::iterator,std::vector<int>::iterator> child = FindChild(elemIterator);
-        std::vector<int>::iterator minChild = (*child.first<=*child.second) ? child.first : child.second;
-
-        while(*elemIterator>*minChild)
-        {
-            elemIterator = ReplaceParentChild(minChild,elemIterator);
-            child = FindChild(elemIterator);
-            minChild = (*child.first<=*child.second) ? child.first : child.second;
-        }
-
-        while(*parent>*elemIterator)
-        {
-            elemIterator = ReplaceParentChild(parent,elemIterator);
+        while (*parent > *elemIterator) {
+            elemIterator = ReplaceParentChild(parent, elemIterator);
             parent = FindPerent(elemIterator);
         }
     };
 
-    };
-int main()
-{
+};
+
+bool testHeapMin() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    for(int j=0;j<1445;j++) {
+        std::uniform_real_distribution<> distrib(-99999, 9999);
+        std::uniform_real_distribution<> boolDistrib(0, 1);
+        HeapMin<long> heap;
+
+        for(int i=0;i<1343;i++) {
+            int num=distrib(gen);
+            heap.Append(num);
+        }
+        for (int i=0;i<1235;i++) {
+            heap.PopRoot();
+
+        }
+        for(int i=0;i<1431;i++) {
+            int num=distrib(gen);
+            heap.Append(num);
+        }
+
+        int min=heap.GetRoot();
+        int result=heap.GetRoot();
+
+        while (!heap.IsEmpty()) {
+            if(heap.GetRoot()<min) {
+                min=heap.GetRoot();
+            }
+            heap.PopRoot();
+        }
+        if(min != result){return 0;}
+    }
+    return 1;
+}
+
+int main() {
+    std::cout<<testHeapMin();
+
     return 0;
 }
