@@ -4,26 +4,29 @@ project(untitled)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(
-        11.1 11.1.cpp
+        13 13.cpp
 )
+
 add_executable(
-        11.2.1 11.2.1.cpp
+        13.1.2 13.1.2.cpp
 )
+
 add_executable(
-        11.2.3 11.2.3.cpp
+        13.1.3 13.1.3.cpp
 )
+
 add_executable(
-        11.3.1 11.3.1.cpp
+        13.1.4 13.1.4.cpp
 )
+
 add_executable(
-        11.3.2 11.3.2.cpp
+        13.27 13.27.cpp
 )
+
 add_executable(
-        11.3.4 11.3.4.cpp
+        test test.cpp
 )
+
 add_executable(
-        11.3.5 11.3.5.cpp
-)
-add_executable(
-        one one.cpp
+        13.6.3 13.6.3.cpp
 )
