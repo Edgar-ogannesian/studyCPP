@@ -3,12 +3,13 @@ project(untitled)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_compile_options(-fsanitize=address)
-add_link_options(-fsanitize=address)
-
 
 add_executable(
         twoSum twoSum.cpp
+)
+
+add_executable(
+        heap heap.cpp
 )
 
 add_executable(
@@ -16,8 +17,18 @@ add_executable(
 )
 
 add_executable(
+        bfs bfs.cpp
+)
+
+add_executable(
+        dfs dfs.cpp
+)
+
+
+add_executable(
         binSearch binSearch.cpp
 )
+
 
 add_executable(
         one one.cpp
