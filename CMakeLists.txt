@@ -30,3 +30,7 @@ add_executable(
 add_executable(
         13.6.3 13.6.3.cpp
 )
+
+add_executable(
+        Array    Array.cpp
+)
