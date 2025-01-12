@@ -7,8 +7,13 @@ add_executable(
         test test.cpp
 )
 
-
 add_executable(
         Array    Array.cpp
-        heap.cpp
+)
+add_executable(
+        heap heap.cpp
+)
+
+add_executable(
+        sharedPointer sharedPointer.cpp
 )
