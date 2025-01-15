@@ -3,13 +3,13 @@
 #include <iostream>
 #include <algorithm>
 #include <random>
-
+#include <cassert>
 
 template<typename T>
 struct IHeap {
 public:
-    virtual void PopRoot() =0;
-    virtual void Append(T num) =0;
+    virtual T pop() =0;
+    virtual void push(T num) =0;
     virtual T GetRoot() =0;
     virtual void Heapify() =0;
 };
@@ -72,13 +72,14 @@ public:
         std::cout<<std::endl;
     }
 
-    void PopRoot() final {
+    T pop() final {
+        T result = heap.front();
         heap.begin()=heap.end()-1;
         Heapify();
         heap.erase(heap.begin()+heap.size()-1);
-
+        return result;
     }
-    void Append(T num) final {
+    void push(T num) final {
         heap.push_back(num);
 
         auto elemIterator=heap.end()-1;
@@ -91,46 +92,77 @@ public:
         }
     };
 
+    auto begin() {
+        return heap.begin();
+    }
+
+    auto end() {
+        return heap.end();
+    }
+
+    bool empty() const {
+        return heap.empty();
+    }
 };
 
-bool testHeapMin() {
-    std::random_device rd;
-    std::mt19937 gen(rd());
+enum Operation {
+    PUSH,
+    POP
+};
 
-    for(int j=0;j<1445;j++) {
-        std::uniform_real_distribution<> distrib(-99999, 9999);
-        std::uniform_real_distribution<> boolDistrib(0, 1);
-        HeapMin<long> heap;
+void test(HeapMin<int>& heap, std::vector<int>& expected_heap, Operation op, int val = 0)
+{
+    int expected_val;
+    switch (op) {
+        case PUSH:
+            std::cout << "push " << val << std::endl;
 
-        for(int i=0;i<1343;i++) {
-            int num=distrib(gen);
-            heap.Append(num);
-        }
-        for (int i=0;i<1235;i++) {
-            heap.PopRoot();
+            heap.push(val);
+            assert(std::is_heap(std::begin(heap), std::end(heap), std::greater<>()) && "pop");
 
-        }
-        for(int i=0;i<1431;i++) {
-            int num=distrib(gen);
-            heap.Append(num);
-        }
+            expected_heap.push_back(val);
+            std::push_heap(std::begin(expected_heap), std::end(expected_heap), std::greater<>());
+            break;
+        case POP:
+            val = heap.pop();
+            assert(std::is_heap(std::begin(heap), std::end(heap), std::greater<>()) && "pop");
 
-        int min=heap.GetRoot();
-        int result=heap.GetRoot();
+            expected_val = expected_heap.front();
+            std::pop_heap(std::begin(expected_heap), std::end(expected_heap), std::greater<>());
+            expected_heap.pop_back();
 
-        while (!heap.IsEmpty()) {
-            if(heap.GetRoot()<min) {
-                min=heap.GetRoot();
-            }
-            heap.PopRoot();
-        }
-        if(min != result){return 0;}
+            std::cout << "pop actual " << val << " vs expected " << expected_val << std::endl;
+            assert(val == expected_val && "pop");
+            break;
     }
-    return 1;
 }
 
 int main() {
-    std::cout<<testHeapMin();
+    {
+        // Место для отладки на статичном наборе тестов
+
+        HeapMin<int> heap;
+        std::vector<int> expected_heap;
+
+        test(heap, expected_heap, PUSH, 30);
+        test(heap, expected_heap, PUSH, 35);
+        test(heap, expected_heap, POP);
+        test(heap, expected_heap, POP);
+    }
+
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> val_distrib(0, 100);
+        std::uniform_int_distribution<> operation_distrib(0, 1);
+
+        HeapMin<int> heap;
+        std::vector<int> expected_heap;
+        for (size_t i = 0; i < 1'000'000; ++i) {
+            Operation op = heap.empty() ? PUSH : static_cast<Operation>(operation_distrib(gen));
+            test(heap, expected_heap, op, val_distrib(gen));
+        }
+    }
 
     return 0;
 }
