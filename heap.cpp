@@ -1,82 +1,63 @@
-//
-// Created by donsimon on 1/12/25.
-//
-#include<iostream>
-#include<vector>
-#include<random>
+#include <vector>
+#include <cmath>
+#include <iostream>
+#include <algorithm>
+#include <random>
+#include <cassert>
 
 template<typename T>
 struct IHeap {
 public:
-    virtual void PopRoot() = 0;
-
-    virtual void Append(T num) = 0;
-
-    virtual T GetRoot() = 0;
-
-    virtual void Heapify() = 0;
+    virtual T Pop() =0;
+    virtual void Push(T num) =0;
+    virtual T GetRoot() =0;
+    virtual void Heapify() =0;
 };
 
 template<typename T>
 struct HeapMin : IHeap<T> {
-private:
-    std::vector<T> heap;
-
-    typename std::vector<T>::iterator FindPerent(typename std::vector<T>::iterator it) {
-        int position = std::distance(heap.begin(), it);
-        return (heap.begin() + position / 2);
-    };
-
-    auto FindPairChild(typename std::vector<T>::iterator &parent) {
-        int position = std::distance(heap.begin(), parent) + 1;
-
-        auto firstChild = (position * 2 <= heap.size()) ? heap.begin() + position * 2 - 1 : heap.end();
-        auto secondChild = (position * 2 < heap.size()) ? heap.begin() + position * 2 : heap.end();
-        std::pair<typename std::vector<T>::iterator, typename std::vector<T>::iterator> result = {
-            firstChild, secondChild
-        };
+public:
+    T Pop() {
+        int result = heap.front();
+        if (heap.size() > 1) heap.front() = heap.back();
+        heap.pop_back();
+        Heapify();
 
         return result;
-    };
-
-    auto ReplaceParentChild(typename std::vector<T>::iterator &parent, typename std::vector<T>::iterator &child) {
-        std::iter_swap(parent, child);
-        return parent;
-    }
-
-    auto GetMinChaild(std::pair<typename std::vector<T>::iterator, typename std::vector<T>::iterator> &pairChaild) {
-        if (pairChaild.second != heap.end()) {
-            if (*pairChaild.first < *pairChaild.second) {
-                return pairChaild.first;
-            } else {
-                return pairChaild.second;
-            }
-        }
-        return pairChaild.first;
     }
 
     void Heapify() {
-        auto parent = heap.begin();
+        int i = 0;
+        while (true) {
+            size_t largest = i;
+            size_t jl = FindLeftChildIndex(i);
+            size_t jr = FindRightChildIndex(i);
 
-        auto pairChaild = FindPairChild(parent);
-        auto minChaild = GetMinChaild(pairChaild);
+            if (jl < heap.size() && heap[largest] > heap[jl]) {
+                largest = jl;
+            }
+            if (jr < heap.size() && heap[largest] > heap[jr]) {
+                largest = jr;
+            }
+            if (largest == i) break;
+            Swap(i, largest);
 
-        while (minChaild != heap.end() && (minChaild < parent)) {
-            parent = ReplaceParentChild(minChaild, parent);
-            pairChaild = FindPairChild(parent);
-            minChaild = GetMinChaild(pairChaild);
+            i = largest;
         }
     }
 
-public:
-    T GetRoot() final {
-        if (!heap.empty()) {
-            return heap[0];
-        }
-    };
+    void Push(T num) {
+        heap.push_back(num);
 
-    bool IsEmpty() {
-        return heap.empty();
+        int parentPosition = FindParentIndex(heap.size() - 1);
+        int chaildPosition = heap.size() - 1;
+
+        while (heap[parentPosition] > heap[chaildPosition]) {
+            Swap(parentPosition, chaildPosition);
+
+            chaildPosition = parentPosition;
+            parentPosition = FindParentIndex(chaildPosition);
+        }
     }
 
     void Show() const {
@@ -86,66 +67,102 @@ public:
         std::cout << std::endl;
     }
 
-    void PopRoot() final {
-        heap.begin() = heap.end() - 1;
-        Heapify();
-        heap.erase(heap.begin() + heap.size() - 1);
+    auto begin() {
+        return heap.begin();
     }
 
-    void Append(T num) final {
-        heap.push_back(num);
+    auto end() {
+        return heap.end();
+    }
 
-        auto elemIterator = heap.end() - 1;
-        auto parent = FindPerent(elemIterator);
+    bool Empty() const {
+        return heap.empty();
+    }
+    T GetRoot() {
+        return *heap.begin();
+    }
 
-        while (*parent > *elemIterator) {
-            elemIterator = ReplaceParentChild(parent, elemIterator);
-            parent = FindPerent(elemIterator);
-        }
-    };
+private:
+    std::vector<T> heap;
+
+    void Swap(int paretnPosition, int chaildPosition) {
+        T parent = heap[paretnPosition];
+        heap[paretnPosition] = heap[chaildPosition];
+        heap[chaildPosition] = parent;
+    }
+
+    int FindLeftChildIndex(int parentIndex) {
+        return 2 * parentIndex + 1;
+    }
+
+    int FindRightChildIndex(int parentIndex) {
+        return 2 * parentIndex + 2;
+    }
+
+    int FindParentIndex(int ChaildIndex) {
+        return ChaildIndex / 2 - (ChaildIndex % 2 == 0) + (ChaildIndex == 0);
+    }
 };
 
-bool testHeapMin() {
-    std::random_device rd;
-    std::mt19937 gen(rd());
+enum Operation {
+    PUSH,
+    POP
+};
 
-    for (int j = 0; j < 1445; j++) {
-        std::uniform_real_distribution<> distrib(-99999, 9999);
-        std::uniform_real_distribution<> boolDistrib(0, 1);
-        HeapMin<int> heap;
+void test(HeapMin<int>& heap, std::vector<int>& expected_heap, Operation op, int val = 0)
+{
+    int expected_val;
+    switch (op) {
+        case PUSH:
+            std::cout << "push " << val << std::endl;
 
-        for (int i = 0; i < 1343; i++) {
-            int num = distrib(gen);
-            heap.Append(num);
-        }
+            heap.Push(val);
+            assert(std::is_heap(std::begin(heap), std::end(heap), std::greater<>()) && "pop");
 
-        for (int i = 0; i < 1235; i++) {
-            heap.PopRoot();
-        }
+            expected_heap.push_back(val);
+            std::push_heap(std::begin(expected_heap), std::end(expected_heap), std::greater<>());
+            break;
+        case POP:
+            val = heap.Pop();
+            assert(std::is_heap(std::begin(heap), std::end(heap), std::greater<>()) && "pop");
 
-        for (int i = 0; i < 1431; i++) {
-            int num = distrib(gen);
-            heap.Append(num);
-        }
+            expected_val = expected_heap.front();
+            std::pop_heap(std::begin(expected_heap), std::end(expected_heap), std::greater<>());
+            expected_heap.pop_back();
 
-        int min = heap.GetRoot();
-        int result = heap.GetRoot();
-
-        while (!heap.IsEmpty()) {
-            if (heap.GetRoot() < min) {
-                min = heap.GetRoot();
-            }
-            heap.PopRoot();
-        }
-
-        if (min != result) {
-            return 0;
-        }
+            std::cout << "pop actual " << val << " vs expected " << expected_val << std::endl;
+            assert(val == expected_val && "pop");
+            break;
     }
-    return 1;
 }
 
 int main() {
-    std::cout << testHeapMin();
+    {
+        // Место для отладки на статичном наборе тестов
+
+        HeapMin<int> heap;
+        std::vector<int> expected_heap;
+
+        test(heap, expected_heap, PUSH, 30);
+        test(heap, expected_heap, PUSH, 35);
+        test(heap, expected_heap, POP);
+        test(heap, expected_heap, POP);
+    }
+
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> val_distrib(0, 100);
+        std::uniform_int_distribution<> operation_distrib(0, 1);
+
+        HeapMin<int> heap;
+        std::vector<int> expected_heap;
+        for (size_t i = 0; i < 1'000'000; ++i) {
+            Operation op = heap.Empty() ? PUSH : static_cast<Operation>(operation_distrib(gen));
+            test(heap, expected_heap, op, val_distrib(gen));
+        }
+    }
+
     return 0;
 }
+
