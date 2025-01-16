@@ -29,20 +29,20 @@ public:
     void Heapify() {
         int i = 0;
         while (true) {
-            size_t largest = i;
-            size_t jl = FindLeftChildIndex(i);
-            size_t jr = FindRightChildIndex(i);
+            int minChaild = i;
+            int leftChaild = FindLeftChildIndex(i);
+            size_t rightChaild = FindRightChildIndex(i);
 
-            if (jl < heap.size() && heap[largest] > heap[jl]) {
-                largest = jl;
+            if (leftChaild < heap.size() && heap[minChaild] > heap[leftChaild]) {
+                minChaild = leftChaild;
             }
-            if (jr < heap.size() && heap[largest] > heap[jr]) {
-                largest = jr;
+            if (rightChaild < heap.size() && heap[minChaild] > heap[rightChaild]) {
+                minChaild = rightChaild;
             }
-            if (largest == i) break;
-            Swap(i, largest);
+            if (minChaild == i) break;
+            Swap(i, minChaild);
 
-            i = largest;
+            i = minChaild;
         }
     }
 
