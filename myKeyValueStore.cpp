@@ -8,15 +8,15 @@
 
 class KeyValueStore {
 private:
-    static std::mutex mutex_;
+    //static std::mutex mutex_;
     static std::unordered_map<std::string,std::string> storage;
 public:
     static void set(std::string key,std::string value) {
-        std::lock_guard<std::mutex> lock(mutex_);
+        //std::lock_guard<std::mutex> lock(mutex_);
         storage.emplace(std::pair<std::string,std::string>{key,value});
     }
     static auto get(std::string key) {
-        std::lock_guard<std::mutex> lock(mutex_);
+        //std::lock_guard<std::mutex> lock(mutex_);
         return *storage.find(key);
     }
 
